@@ -1,18 +1,23 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { API_KEY, BASE_URL } from "./constants";
+import { BASE_URL } from "./constants";
 import { capitalizeFirstLetter } from "./utils";
 import Highlights from "./components/Highlights.vue";
-import WeaterSummary from "./components/Weatersummary.vue";
+import WeatherSummary from "./components/WeatherSummary.vue";
 import Coords from "./components/Coords.vue";
 import Humidity from "./components/Humidity.vue";
 
 const city = ref("Paris");
 const weatherInfo = ref(null);
 const isError = computed(() => weatherInfo.value?.cod !== 200);
-
+console.log(import.meta.env.VITE_SOME_KEY);
+console.log(import.meta.env.VITE_APP_KEY);
 function getWeather() {
-  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`)
+  fetch(
+    `${BASE_URL}?q=${city.value}&units=metric&appid=${
+      import.meta.env.VITE_APP_KEY
+    }`
+  )
     .then((response) => response.json())
     .then((data) => (weatherInfo.value = data));
 }
@@ -42,7 +47,7 @@ onMounted(getWeather);
                     @keyup.enter="getWeather"
                   />
                 </div>
-                <WeaterSummary v-if="!isError" :weatherInfo="weatherInfo" />
+                <WeatherSummary v-if="!isError" :weatherInfo="weatherInfo" />
                 <div v-else class="error">
                   <div class="error-title">Oooops! Something went wrong</div>
                   <div v-if="weatherInfo?.message" class="error-message">
