@@ -10,12 +10,10 @@ import Humidity from "./components/Humidity.vue";
 const city = ref("Paris");
 const weatherInfo = ref(null);
 const isError = computed(() => weatherInfo.value?.cod !== 200);
-console.log(import.meta.env.VITE_SOME_KEY);
-console.log(import.meta.env.VITE_APP_KEY);
 function getWeather() {
   fetch(
     `${BASE_URL}?q=${city.value}&units=metric&appid=${
-      import.meta.env.VITE_APP_KEY
+      import.meta.env.VITE_API_KEY
     }`
   )
     .then((response) => response.json())
