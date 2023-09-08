@@ -1,21 +1,16 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { BASE_URL } from "./constants";
+import { BASE_URL, API_KEY } from "./constants";
 import { capitalizeFirstLetter } from "./utils";
 import Highlights from "./components/Highlights.vue";
 import WeatherSummary from "./components/WeatherSummary.vue";
 import Coords from "./components/Coords.vue";
 import Humidity from "./components/Humidity.vue";
-
 const city = ref("Paris");
 const weatherInfo = ref(null);
 const isError = computed(() => weatherInfo.value?.cod !== 200);
 function getWeather() {
-  fetch(
-    `${BASE_URL}?q=${city.value}&units=metric&appid=${
-      import.meta.env.VITE_API_KEY
-    }`
-  )
+  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`)
     .then((response) => response.json())
     .then((data) => (weatherInfo.value = data));
 }
